@@ -1,6 +1,7 @@
 ﻿using Nez;
 using AdvJam2017.Managers;
 using AdvJam2017.NPCs;
+using AdvJam2017.Systems;
 
 namespace NezTest.NPCs.Commands
 {
@@ -144,6 +145,49 @@ namespace NezTest.NPCs.Commands
             {
                 Core.getGlobalManager<SystemManager>().variables[_name] = _value;
             }
+        }
+
+        public override bool update()
+        {
+            return true;
+        }
+    }
+    
+    public class NpcFocusCameraCommand : NpcCommand
+    {
+        private Entity _target;
+
+        public NpcFocusCameraCommand(NpcBase npc, Entity target) : base(npc)
+        {
+            _target = target;
+        }
+
+        public override void start()
+        {
+            _npc.entity.scene.getEntityProcessor<CameraSystem>().SetTarget(_target);
+        }
+
+        public override bool update()
+        {
+            return true;
+        }
+    }
+
+    public class NpcCinematicCommand : NpcCommand
+    {
+        private float _amount;
+        private float _duration;
+
+        public NpcCinematicCommand(NpcBase npc, float amount, float duration) : base(npc)
+        {
+            _amount = amount;
+            _duration = duration;
+        }
+
+        public override void start()
+        {
+            var sys = Core.getGlobalManager<SystemManager>();
+            sys.tween("cinematicAmount", _amount, _duration).setEaseType(Nez.Tweens.EaseType.SineInOut).start(); 
         }
 
         public override bool update()

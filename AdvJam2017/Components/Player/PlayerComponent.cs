@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nez;
 using Nez.Tiled;
-using AdvJam2017.Components.PlayerStates;
 using AdvJam2017.Components.Sprites;
 using AdvJam2017.FSM;
 using AdvJam2017.Managers;
 using System.Collections.Generic;
+using AdvJam2017.Components.Player.PlayerStates;
+using System;
 
-namespace AdvJam2017.Components
+namespace AdvJam2017.Components.Player
 {
     public class PlayerComponent : Component, IUpdatable
     {
@@ -63,23 +64,27 @@ namespace AdvJam2017.Components
 
         public override void initialize()
         {
-            var texture = entity.scene.content.Load<Texture2D>("characters");
+            var texture = entity.scene.content.Load<Texture2D>(Content.Characters.elliot);
 
             sprite = entity.addComponent(new AnimatedSprite<Animations>(texture, Animations.Stand));
-            sprite.CreateAnimation(Animations.Stand, 0);
+            sprite.CreateAnimation(Animations.Stand, 0.25f);
             sprite.AddFrames(Animations.Stand, new List<Rectangle>()
             {
-                new Rectangle(0, 32, 32, 32),
-            });
+                new Rectangle(0, 0, 64, 64),
+                new Rectangle(64, 0, 64, 64),
+                new Rectangle(128, 0, 64, 64),
+                new Rectangle(192, 0, 64, 64),
+            }, new int[] { 0, 0, 0, 0 }, new int[] { -12, -12, -12, -12 });
 
             sprite.CreateAnimation(Animations.Walking, 0.1f);
             sprite.AddFrames(Animations.Walking, new List<Rectangle>()
             {
-                new Rectangle(0, 32, 32, 32),
-                new Rectangle(32, 32, 32, 32),
-                new Rectangle(64, 32, 32, 32),
-                new Rectangle(96, 32, 32, 32),
-            });
+                new Rectangle(0, 64, 64, 64),
+                new Rectangle(64, 64, 64, 64),
+                new Rectangle(128, 64, 64, 64),
+                new Rectangle(192, 64, 64, 64),
+                new Rectangle(256, 64, 64, 64),
+            }, new int[] { 0, 0, 0, 0, 0 }, new int[] { -12, -12, -12, -12, -12 });
 
             sprite.CreateAnimation(Animations.JumpPreparation, 0.1f);
             sprite.AddFrames(Animations.JumpPreparation, new List<Rectangle>()
@@ -143,7 +148,13 @@ namespace AdvJam2017.Components
             {
                 var po = _platformerObject;
                 var mms = po.maxMoveSpeed;
-                po.velocity.X = (int)MathHelper.Clamp(po.velocity.X + po.moveSpeed * velocity, -mms, mms);
+
+                if (velocity != Math.Sign(po.velocity.X))
+                {
+                    po.velocity.X = 0;
+                }
+
+                po.velocity.X = (int)MathHelper.Clamp(po.velocity.X + po.moveSpeed * velocity * Time.deltaTime, -mms, mms);
                 sprite.spriteEffects = velocity < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             }
             else

@@ -15,6 +15,7 @@ namespace AdvJam2017
 
             // Register Global Managers
             registerGlobalManager(new InputManager());
+            registerGlobalManager(new SystemManager());
         }
 
         protected override void Initialize()

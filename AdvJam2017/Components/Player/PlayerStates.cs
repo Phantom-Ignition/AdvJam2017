@@ -3,7 +3,7 @@ using Nez;
 using AdvJam2017.FSM;
 using AdvJam2017.Managers;
 
-namespace AdvJam2017.Components.PlayerStates
+namespace AdvJam2017.Components.Player.PlayerStates
 {
     public class PlayerState : State<PlayerState, PlayerComponent>
     {

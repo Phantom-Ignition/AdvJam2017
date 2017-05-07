@@ -81,24 +81,27 @@ namespace AdvJam2017.Components.Sprites
         {
             if (_animations[_currentFrameList].Loop)
             {
+                var currentAnimation = _animations[_currentFrameList];
                 _delayTick += Time.deltaTime;
-                if (_delayTick > _animations[_currentFrameList].Delay)
+                if (_delayTick > currentAnimation.Delay)
                 {
-                    _delayTick -= _animations[_currentFrameList].Delay;
+                    _delayTick -= currentAnimation.Delay;
                     _currentFrame++;
-                    if (_currentFrame == _animations[_currentFrameList].Frames.Count)
+                    if (_currentFrame == currentAnimation.Frames.Count)
                     {
-                        if (!_animations[_currentFrameList].Reset)
+                        if (!currentAnimation.Reset)
                         {
                             _currentFrame--;
-                            _animations[_currentFrameList].Loop = false;
+                            currentAnimation.Loop = false;
                         }
                         else _currentFrame = 0;
                         if (!_looped) _looped = true;
                     }
                 }
-                var rsubtexture = _animations[_currentFrameList].Frames[_currentFrame].Subtexture;
+                var currentFrame = currentAnimation.Frames[_currentFrame];
+                var rsubtexture = currentFrame.Subtexture;
                 setSubtexture(rsubtexture);
+                _localOffset = new Vector2(currentFrame.OffsetX, currentFrame.OffsetY);
             }
         }
 

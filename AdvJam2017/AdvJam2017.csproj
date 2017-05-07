@@ -40,23 +40,33 @@
   <ItemGroup>
     <Compile Include="Components\InteractionCollider.cs" />
     <Compile Include="Components\PlatformerObject.cs" />
-    <Compile Include="Components\PlayerComponent.cs" />
-    <Compile Include="Components\PlayerStates.cs" />
+    <Compile Include="Components\Player\PlayerComponent.cs" />
+    <Compile Include="Components\Player\PlayerStates.cs" />
     <Compile Include="Components\Sprites\AnimatedSprite.cs" />
     <Compile Include="Components\Sprites\FrameInfo.cs" />
     <Compile Include="Components\Sprites\FramesList.cs" />
     <Compile Include="Components\Windows\TextWindowComponent.cs" />
     <Compile Include="Components\Windows\Windowskin.cs" />
     <Compile Include="Components\Windows\WindowSprite.cs" />
+    <Compile Include="ContentPathGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContentPathGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="FSM\FiniteStateMachine.cs" />
     <Compile Include="GameMain.cs" />
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\SystemManager.cs" />
+    <Compile Include="NPCs\ElliotMother.cs" />
     <Compile Include="NPCs\NpcBase.cs" />
     <Compile Include="NPCs\NpcCommands.cs" />
+    <Compile Include="NPCs\NpcTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenes\SceneMap.cs" />
+    <Compile Include="Systems\CameraSystem.cs" />
+    <Compile Include="Systems\NpcInteractionSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK">
@@ -73,6 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
+    <Content Include="ContentPathGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ContentPathGenerator.cs</LastGenOutput>
+    </Content>
     <Content Include="OpenTK.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -85,6 +99,146 @@
       <Project>{60b7197d-d0d5-405c-90a2-a56903e9b039}</Project>
       <Name>Nez</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\nez\effects\Bevels.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\BloomCombine.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\BloomExtract.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Crosshatch.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\DeferredLighting.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\DeferredSprite.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Dissolve.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Dots.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\ForwardLighting.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\GaussianBlur.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Grayscale.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\HeatDistortion.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Invert.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Letterbox.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\MultiTexture.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\MultiTextureOverlay.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Noise.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\PaletteCycler.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\PixelGlitch.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\PolygonLight.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Reflection.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Scanlines.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Sepia.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\SpriteAlphaTest.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\SpriteBlinkEffect.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\SpriteEffect.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\SpriteLightMultiply.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\SpriteLines.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\transitions\Squares.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\transitions\TextureWipe.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\transitions\Wind.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Twist.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\effects\Vignette.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\NezDefaultBMFont.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\gooCursor.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\heatDistortionNoise.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\angular.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\crissCross.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\diagonalDistort.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\horizontal.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\noise.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\pokemon.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\sawTooth.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\spiral.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\nez\textures\textureWipeTransition\wink.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

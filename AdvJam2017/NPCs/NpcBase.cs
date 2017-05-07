@@ -22,6 +22,7 @@ namespace AdvJam2017.NPCs
         }
 
         public AnimatedSprite<Animations> sprite;
+        public bool FlipX { get; set; }
 
         //--------------------------------------------------
         // Platform Object
@@ -102,6 +103,7 @@ namespace AdvJam2017.NPCs
         {
             sprite = entity.addComponent(new AnimatedSprite<Animations>(_texture, default(Animations)));
             sprite.renderLayer = _renderLayer;
+            sprite.flipX = FlipX;
         }
 
         public void setRenderLayer(int renderLayer)
@@ -114,8 +116,8 @@ namespace AdvJam2017.NPCs
             sprite.CreateAnimation(Animations.Stand);
             sprite.AddFrames(Animations.Stand, new List<Rectangle>()
             {
-                new Rectangle(0, 0, 32, 32)
-            });
+                new Rectangle(0, 0, 64, 64)
+            }, new int[] { 0 }, new int[] { -12 });
         }
 
         private IEnumerator actionList()
@@ -202,6 +204,16 @@ namespace AdvJam2017.NPCs
         {
             var globalVariables = Core.getGlobalManager<SystemManager>().variables;
             return globalVariables.ContainsKey(name) ? globalVariables[name] : 0;
+        }
+
+        protected void focusCamera(Entity target)
+        {
+            _commands.Add(new NpcFocusCameraCommand(this, target));
+        }
+
+        protected void cinematic(float amount, float duration)
+        {
+            _commands.Add(new NpcCinematicCommand(this, amount, duration));
         }
 
         #endregion

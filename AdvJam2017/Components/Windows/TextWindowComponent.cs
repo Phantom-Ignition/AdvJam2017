@@ -79,7 +79,7 @@ namespace AdvJam2017.Components.Windows
 
         private void createWindow()
         {
-            var texture = entity.scene.content.Load<Texture2D>("windowskin");
+            var texture = entity.scene.content.Load<Texture2D>(Content.System.windowskin);
             _window = entity.addComponent(new WindowSprite(texture));
         }
 

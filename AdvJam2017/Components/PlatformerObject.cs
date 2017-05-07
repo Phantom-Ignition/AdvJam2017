@@ -9,8 +9,8 @@ namespace AdvJam2017.Components
         //--------------------------------------------------
         // Physics
 
-        public float moveSpeed = 10;
-        public float maxMoveSpeed = 100;
+        public float moveSpeed = 1000;
+        public float maxMoveSpeed = 150;
         public float gravity = 1000;
         public float jumpHeight = 16 * 2;
 
