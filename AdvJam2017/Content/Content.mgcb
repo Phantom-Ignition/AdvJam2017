@@ -100,3 +100,8 @@
 /processorParam:TextureFormat=Color
 /build:characters/ElliotMother.png
 
+#begin maps/map2.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:maps/map2.tmx
+

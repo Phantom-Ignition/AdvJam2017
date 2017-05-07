@@ -89,26 +89,26 @@ namespace AdvJam2017.Components.Player
             sprite.CreateAnimation(Animations.JumpPreparation, 0.1f);
             sprite.AddFrames(Animations.JumpPreparation, new List<Rectangle>()
             {
-                new Rectangle(128, 32, 32, 32)
-            });
+                new Rectangle(0, 0, 64, 64),
+            }, new int[] { 0 }, new int[] { -12, -12, -12, -12 });
 
             sprite.CreateAnimation(Animations.JumpUpwards, 0.1f);
             sprite.AddFrames(Animations.JumpUpwards, new List<Rectangle>()
             {
-                new Rectangle(160, 32, 32, 32)
-            });
+                new Rectangle(0, 0, 64, 64),
+            }, new int[] { 0 }, new int[] { -12, -12, -12, -12 });
 
             sprite.CreateAnimation(Animations.JumpFalling, 0.1f);
             sprite.AddFrames(Animations.JumpFalling, new List<Rectangle>()
             {
-                new Rectangle(192, 32, 32, 32)
-            });
+                new Rectangle(0, 0, 64, 64),
+            }, new int[] { 0 }, new int[] { -12, -12, -12, -12 });
 
             sprite.CreateAnimation(Animations.JumpLanding, 0.1f);
             sprite.AddFrames(Animations.JumpLanding, new List<Rectangle>()
             {
-                new Rectangle(224, 32, 32, 32)
-            });
+                new Rectangle(0, 0, 64, 64),
+            }, new int[] { 0 }, new int[] { -12, -12, -12, -12 });
 
             sprite.CreateAnimation(Animations.Hit, 0.1f);
             sprite.AddFrames(Animations.Hit, new List<Rectangle>()

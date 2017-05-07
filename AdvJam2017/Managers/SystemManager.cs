@@ -1,4 +1,6 @@
-﻿using Nez;
+﻿using Microsoft.Xna.Framework;
+using Nez;
+using Nez.Tiled;
 using System.Collections.Generic;
 
 namespace AdvJam2017.Managers
@@ -21,6 +23,18 @@ namespace AdvJam2017.Managers
 
         public Entity playerEntity;
 
+        //--------------------------------------------------
+        // Map
+
+        private int _mapId;
+        public int MapId => _mapId;
+
+        private TiledMap _tiledMapComponent;
+        public TiledMap TiledMap => _tiledMapComponent;
+
+        private Vector2? _spawnPosition;
+        public Vector2? SpawnPosition => _spawnPosition;
+
         //----------------------//------------------------//
 
         public SystemManager()
@@ -32,6 +46,21 @@ namespace AdvJam2017.Managers
         public void setPlayer(Entity playerEntity)
         {
             this.playerEntity = playerEntity;
+        }
+
+        public void setMapId(int mapId)
+        {
+            _mapId = mapId;
+        }
+        
+        public void setTiledMapComponent(TiledMap map)
+        {
+            _tiledMapComponent = map;
+        }
+
+        public void setSpawnPosition(Vector2 position)
+        {
+            _spawnPosition = position;
         }
 
         public void update()

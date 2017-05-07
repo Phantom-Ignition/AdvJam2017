@@ -1,4 +1,5 @@
 ﻿using AdvJam2017.Components;
+using AdvJam2017.Components.Player;
 using AdvJam2017.Components.Sprites;
 using AdvJam2017.Components.Windows;
 using AdvJam2017.Managers;
@@ -92,7 +93,6 @@ namespace AdvJam2017.NPCs
             loadTexture();
             createSprite();
             createAnimations();
-            createActionList();
             sprite.play(default(Animations));
         }
 
@@ -135,13 +135,20 @@ namespace AdvJam2017.NPCs
                 if (++index >= _commands.Count)
                 {
                     Core.getGlobalManager<InputManager>().IsBusy = false;
+                    sprite.flipX = FlipX;
                     yield break;
                 }
             }
         }
 
-        public void executeActionList()
+        public void executeActionList(bool turnToPlayer)
         {
+            if (turnToPlayer)
+            {
+                var player = Core.getGlobalManager<SystemManager>().playerEntity;
+                var differece = transform.position - player.position;
+                sprite.flipX = differece.X > 0;
+            }
             _commands.Clear();
             createActionList();
             Core.startCoroutine(actionList());

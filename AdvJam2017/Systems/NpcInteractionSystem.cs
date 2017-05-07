@@ -32,7 +32,7 @@ namespace AdvJam2017.Systems
         {
             foreach (var npc in _autorunNpcs)
             {
-                npc.executeActionList();
+                executeActionList(npc, false);
             }
             _autorunNpcs.Clear();
         }
@@ -65,15 +65,15 @@ namespace AdvJam2017.Systems
         {
             CollisionResult collisionResult;
             if (entity.getComponent<Collider>().collidesWith(_player.getComponent<InteractionCollider>(), out collisionResult)) {
-                _player.FSM.pushState(new Components.Player.PlayerStates.SlashingState());
-                executeActionList(entity.getComponent<NpcBase>());
+                //_player.FSM.pushState(new Components.Player.PlayerStates.SlashingState());
+                executeActionList(entity.getComponent<NpcBase>(), true);
             }
         }
 
-        private void executeActionList(NpcBase npc)
+        private void executeActionList(NpcBase npc, bool turnToPlayer)
         {
             Core.getGlobalManager<InputManager>().IsBusy = true;
-            npc.executeActionList();
+            npc.executeActionList(turnToPlayer);
         }
     }
 }

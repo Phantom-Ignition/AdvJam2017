@@ -16,13 +16,29 @@ namespace AdvJam2017.NPCs
 
         protected override void createActionList()
         {
-            cinematic(30, 1);
-            wait(2);
-            focusCamera(entity);
-            message("Elliot, stop doing that!");
-            closeMessage();
-            cinematic(0, 1);
-            focusCamera(Core.getGlobalManager<SystemManager>().playerEntity);
+            if (getSwitch("started2"))
+            {
+                message("Hey, you will be late!");
+                closeMessage();
+            }
+            else if (getSwitch("started"))
+            {
+                message("Honestly, I don't think this is your thing, maybe you are dreaming too high.");
+                message("What's the problem with be an ordinary mouse?");
+                setSwitch("started2", true);
+                closeMessage();
+            }
+            else
+            {
+                cinematic(30, 1);
+                wait(2);
+                focusCamera(entity);
+                message("Elliot, you will be late to the guard register, stop poking this thing and hurry!");
+                closeMessage();
+                cinematic(0, 1);
+                focusCamera(Core.getGlobalManager<SystemManager>().playerEntity);
+                setSwitch("started", true);
+            }
         }
 
         protected override void loadTexture()

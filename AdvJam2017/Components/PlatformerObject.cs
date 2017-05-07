@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AdvJam2017.Managers;
+using Microsoft.Xna.Framework;
 using Nez;
 using Nez.Tiled;
 
@@ -49,6 +50,11 @@ namespace AdvJam2017.Components
 
             // apply movement
             _mover.move(velocity * Time.deltaTime, _boxCollider, collisionState);
+
+            // handle map bounds
+            var map = Core.getGlobalManager<SystemManager>().TiledMap;
+            var x = MathHelper.Clamp(_mover.transform.position.X, 0, map.widthInPixels);
+            _mover.transform.position = new Vector2(x, _mover.transform.position.Y);
 
             // update velocity
             if (collisionState.right || collisionState.left)

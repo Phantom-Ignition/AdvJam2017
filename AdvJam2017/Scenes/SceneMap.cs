@@ -1,4 +1,5 @@
 ﻿using AdvJam2017.Components;
+using AdvJam2017.Components.Map;
 using AdvJam2017.Components.Player;
 using AdvJam2017.Components.Windows;
 using AdvJam2017.Extensions;
@@ -30,19 +31,13 @@ namespace AdvJam2017.Scenes
         public const int PARTICLES_RENDER_LAYER = 2;
 
         //--------------------------------------------------
-        // Events
-
-        private bool _executedAutorunNpcs;
-
-        //--------------------------------------------------
-        // Postprocessors
+        // PostProcessors
 
         private CinematicLetterboxPostProcessor _cinematicPostProcessor;
 
         //--------------------------------------------------
         // Map
-
-        public int mapId;
+        
         private TiledMap _tiledMap;
 
         //----------------------//------------------------//
@@ -50,22 +45,27 @@ namespace AdvJam2017.Scenes
         public override void initialize()
         {
             addRenderer(new DefaultRenderer());
-        }
-
-        public override void onStart()
-        {
             setupMap();
             setupPlayer();
             setupEntityProcessors();
             setupNpcs();
             setupParticles();
             setupMapTexts();
+            setupTransfers();
             setupPostProcessors();
+        }
+
+        public override void onStart()
+        {
+            getEntityProcessor<NpcInteractionSystem>().mapStart();
         }
 
         private void setupMap()
         {
+            var sysManager = Core.getGlobalManager<SystemManager>();
+            var mapId = sysManager.MapId;
             _tiledMap = content.Load<TiledMap>(string.Format("maps/map{0}", mapId));
+            sysManager.setTiledMapComponent(_tiledMap);
 
             var tiledEntity = createEntity("tiled-map");
             var collisionLayer = _tiledMap.properties["collisionLayer"];
@@ -84,11 +84,22 @@ namespace AdvJam2017.Scenes
 
         private void setupPlayer()
         {
+            var sysManager = Core.getGlobalManager<SystemManager>();
+
             var collisionLayer = _tiledMap.properties["collisionLayer"];
-            var playerSpawn = _tiledMap.getObjectGroup("objects").objectWithName("playerSpawn");
+            Vector2? playerSpawn = null;
+
+            if (sysManager.SpawnPosition.HasValue)
+            {
+                playerSpawn = sysManager.SpawnPosition;
+            }
+            else
+            {
+                playerSpawn = _tiledMap.getObjectGroup("objects").objectWithName("playerSpawn").position;
+            }
 
             var player = createEntity("player");
-            player.transform.position = playerSpawn.position;
+            player.transform.position = playerSpawn.Value;
             player.addComponent(new TiledMapMover(_tiledMap.getLayer<TiledTileLayer>(collisionLayer)));
             player.addComponent(new BoxCollider(-10f, -20f, 20f, 40f));
             player.addComponent(new InteractionCollider(-20f, -6, 40, 22));
@@ -116,7 +127,7 @@ namespace AdvJam2017.Scenes
                 npcEntity.addComponent(npcComponent);
                 npcEntity.addComponent<PlatformerObject>();
                 npcEntity.addComponent<TextWindowComponent>();
-                npcEntity.addComponent(new BoxCollider(-10f, -20f, 20f, 40f));
+                npcEntity.addComponent(new BoxCollider(-14f, -24f, 32f, 44f));
                 npcEntity.addComponent(new TiledMapMover(_tiledMap.getLayer<TiledTileLayer>(collisionLayer)));
                 npcEntity.position = npc.position + new Vector2(npc.width, npc.height) / 2; ;
 
@@ -130,7 +141,6 @@ namespace AdvJam2017.Scenes
                     getEntityProcessor<NpcInteractionSystem>().addAutorun(npcComponent);
                 }
             }
-
         }
 
         private void setupParticles()
@@ -151,6 +161,21 @@ namespace AdvJam2017.Scenes
             }
         }
 
+        private void setupTransfers()
+        {
+            var transfers = _tiledMap.getObjectGroup("transfers");
+            if (transfers == null) return;
+
+            var names = new Dictionary<string, int>();
+            foreach (var transferObj in transfers.objects)
+            { 
+                names[transferObj.name] = names.ContainsKey(transferObj.name) ? ++names[transferObj.name] : 0;
+
+                var entity = createEntity(string.Format("{0}:{1}", transferObj.name, names[transferObj.name]));
+                entity.addComponent(new TransferComponent(transferObj));
+            }
+        }
+
         private void setupEntityProcessors()
         {
             var player = findEntity("player");
@@ -158,6 +183,7 @@ namespace AdvJam2017.Scenes
             var mapSize = new Vector2(_tiledMap.width * _tiledMap.tileWidth, _tiledMap.height / _tiledMap.tileHeight);
             addEntityProcessor(new CameraSystem(player) { mapLockEnabled = true, mapSize = mapSize, followLerp = 0.07f, deadzoneSize = new Vector2(20, 10) });
             addEntityProcessor(new NpcInteractionSystem(player.getComponent<PlayerComponent>()));
+            addEntityProcessor(new TransferSystem(new Matcher().all(typeof(TransferComponent)), player));
         }
 
         private void setupMapTexts()
@@ -195,15 +221,17 @@ namespace AdvJam2017.Scenes
             _cinematicPostProcessor = addPostProcessor(new CinematicLetterboxPostProcessor(1));
         }
 
+        public void reserveTransfer(TransferComponent transferComponent)
+        {
+            Core.getGlobalManager<SystemManager>().setMapId(transferComponent.destinyId);
+            Core.getGlobalManager<SystemManager>().setSpawnPosition(transferComponent.destinyPosition);
+            Core.startSceneTransition(new FadeTransition(() => new SceneMap()));
+        }
+
         public override void update()
         {
             base.update();
 
-            if (!_executedAutorunNpcs)
-            {
-                getEntityProcessor<NpcInteractionSystem>().mapStart();
-                _executedAutorunNpcs = true;
-            }
             if (Input.isKeyPressed(Keys.C))
             {
                 var sys = Core.getGlobalManager<SystemManager>();

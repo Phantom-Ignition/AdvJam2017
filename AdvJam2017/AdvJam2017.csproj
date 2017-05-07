@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Components\InteractionCollider.cs" />
+    <Compile Include="Components\Map\TransferComponent.cs" />
     <Compile Include="Components\PlatformerObject.cs" />
     <Compile Include="Components\Player\PlayerComponent.cs" />
     <Compile Include="Components\Player\PlayerStates.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Scenes\SceneMap.cs" />
     <Compile Include="Systems\CameraSystem.cs" />
     <Compile Include="Systems\NpcInteractionSystem.cs" />
+    <Compile Include="Systems\TransferSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK">
