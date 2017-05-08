@@ -13,6 +13,8 @@ namespace AdvJam2017
             Window.AllowUserResizing = true;
             debugRenderEnabled = true;
 
+            IsFixedTimeStep = true;
+
             // Register Global Managers
             registerGlobalManager(new InputManager());
             registerGlobalManager(new SystemManager());
@@ -29,7 +31,7 @@ namespace AdvJam2017
             base.Draw(new GameTime());
 
             // Set first scene
-            getGlobalManager<SystemManager>().setMapId(1);
+            getGlobalManager<SystemManager>().setMapId(2);
             scene = new SceneMap();
         }
     }

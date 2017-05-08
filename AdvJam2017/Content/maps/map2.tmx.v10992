@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="18" tilewidth="32" tileheight="32" nextobjectid="6">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="18" tilewidth="32" tileheight="32" nextobjectid="5">
  <properties>
   <property name="collisionLayer" value="collision"/>
   <property name="defaultLayers" value="collision, details, trees"/>
@@ -64,7 +64,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
@@ -80,7 +80,7 @@
 </data>
  </layer>
  <objectgroup name="objects">
-  <object id="2" name="playerSpawn" x="800" y="128" width="32" height="32"/>
+  <object id="2" name="playerSpawn" x="384" y="160" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="npcs">
   <object id="3" name="Elder Mouse" type="ElderMouse" x="448" y="160" width="32" height="32">
@@ -88,7 +88,6 @@
     <property name="flipX" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="4" name="Village Barrier" type="VillageBarrier" x="919" y="0" width="9" height="160"/>
-  <object id="5" name="Start Field Barrier" type="StartFieldBarrier" x="32" y="0" width="9" height="192"/>
+  <object id="4" name="Village Barrier" type="VillageBarrier" x="896" y="0" width="9" height="161"/>
  </objectgroup>
 </map>

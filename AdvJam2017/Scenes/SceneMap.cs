@@ -102,8 +102,9 @@ namespace AdvJam2017.Scenes
             player.transform.position = playerSpawn.Value;
             player.addComponent(new TiledMapMover(_tiledMap.getLayer<TiledTileLayer>(collisionLayer)));
             player.addComponent(new BoxCollider(-10f, -20f, 20f, 40f));
-            player.addComponent(new InteractionCollider(-20f, -6, 40, 22));
+            player.addComponent(new InteractionCollider(-30f, -6, 60, 22));
             player.addComponent<PlatformerObject>();
+            player.addComponent<TextWindowComponent>();
             var playerComponent = player.addComponent<PlayerComponent>();
             playerComponent.sprite.renderLayer = PLAYER_RENDER_LAYER;
 
@@ -121,15 +122,23 @@ namespace AdvJam2017.Scenes
             {
                 names[npc.name] = names.ContainsKey(npc.name) ? ++names[npc.name] : 0;
 
-                var npcEntity = createEntity(string.Format("iu", npc.name, names[npc.name]));
+                var npcEntity = createEntity(string.Format("{0}:{1}", npc.name, names[npc.name]));
                 var npcComponent = (NpcBase)Activator.CreateInstance(Type.GetType("AdvJam2017.NPCs." + npc.type), npc.name);
                 npcComponent.setRenderLayer(MISC_RENDER_LAYER);
                 npcEntity.addComponent(npcComponent);
-                npcEntity.addComponent<PlatformerObject>();
                 npcEntity.addComponent<TextWindowComponent>();
-                npcEntity.addComponent(new BoxCollider(-14f, -24f, 32f, 44f));
                 npcEntity.addComponent(new TiledMapMover(_tiledMap.getLayer<TiledTileLayer>(collisionLayer)));
-                npcEntity.position = npc.position + new Vector2(npc.width, npc.height) / 2; ;
+
+                if (npcComponent.Invisible)
+                {
+                    npcEntity.addComponent(new BoxCollider(npc.x, npc.y, npc.width, npc.height));
+                }
+                else
+                {
+                    npcEntity.addComponent(new BoxCollider(-14f, -24f, 32f, 44f));
+                    npcEntity.position = npc.position + new Vector2(npc.width, npc.height) / 2;
+                    npcEntity.addComponent<PlatformerObject>();
+                }
 
                 // Props
                 if (npc.properties.ContainsKey("flipX") && npc.properties["flipX"] == "true")
@@ -180,8 +189,8 @@ namespace AdvJam2017.Scenes
         {
             var player = findEntity("player");
             camera.addComponent(new CameraShake());
-            var mapSize = new Vector2(_tiledMap.width * _tiledMap.tileWidth, _tiledMap.height / _tiledMap.tileHeight);
-            addEntityProcessor(new CameraSystem(player) { mapLockEnabled = true, mapSize = mapSize, followLerp = 0.07f, deadzoneSize = new Vector2(20, 10) });
+            var mapSize = new Vector2(_tiledMap.width * _tiledMap.tileWidth, _tiledMap.height * _tiledMap.tileHeight);
+            addEntityProcessor(new CameraSystem(player) { mapLockEnabled = true, mapSize = mapSize, followLerp = 0.08f, deadzoneSize = new Vector2(20, 10) });
             addEntityProcessor(new NpcInteractionSystem(player.getComponent<PlayerComponent>()));
             addEntityProcessor(new TransferSystem(new Matcher().all(typeof(TransferComponent)), player));
         }

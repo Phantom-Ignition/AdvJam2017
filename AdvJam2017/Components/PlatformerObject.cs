@@ -12,8 +12,8 @@ namespace AdvJam2017.Components
 
         public float moveSpeed = 1000;
         public float maxMoveSpeed = 150;
-        public float gravity = 1000;
-        public float jumpHeight = 16 * 2;
+        public float gravity = 1200;
+        public float jumpHeight = 32 * 0.9f;
 
         //--------------------------------------------------
         // Tiled Mover

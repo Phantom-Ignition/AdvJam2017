@@ -1,10 +1,5 @@
 ﻿using AdvJam2017.Managers;
 using Nez;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdvJam2017.NPCs
 {

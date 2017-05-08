@@ -55,7 +55,7 @@ namespace AdvJam2017.Systems
         protected override void process(List<Entity> entities)
         {
             var inputManager = Core.getGlobalManager<InputManager>();
-            if (!inputManager.IsBusy && inputManager.InteractionButton.isPressed)
+            if (!inputManager.IsBusy)
             {
                 base.process(entities);
             }
@@ -63,11 +63,30 @@ namespace AdvJam2017.Systems
 
         public override void process(Entity entity)
         {
-            CollisionResult collisionResult;
-            if (entity.getComponent<Collider>().collidesWith(_player.getComponent<InteractionCollider>(), out collisionResult)) {
-                //_player.FSM.pushState(new Components.Player.PlayerStates.SlashingState());
-                executeActionList(entity.getComponent<NpcBase>(), true);
+            var npcComp = entity.getComponent<NpcBase>();
+
+            if (npcComp.RunOnTouch)
+            {
+                CollisionResult collisionResult;
+                if (entity.getComponent<Collider>().collidesWith(_player.getComponent<InteractionCollider>(), out collisionResult))
+                {
+                    executeActionList(entity.getComponent<NpcBase>(), true);
+                }
             }
+            else
+            {
+                var inputManager = Core.getGlobalManager<InputManager>();
+                if (inputManager.InteractionButton.isPressed)
+                {
+                    CollisionResult collisionResult;
+                    if (entity.getComponent<Collider>().collidesWith(_player.getComponent<InteractionCollider>(), out collisionResult))
+                    {
+                        executeActionList(entity.getComponent<NpcBase>(), true);
+                    }
+                }
+            }
+
+            
         }
 
         private void executeActionList(NpcBase npc, bool turnToPlayer)

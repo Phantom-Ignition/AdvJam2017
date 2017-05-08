@@ -75,6 +75,16 @@ namespace AdvJam2017.NPCs
             }
         }
 
+        //--------------------------------------------------
+        // Invisible
+
+        public bool Invisible { get; set; }
+
+        //--------------------------------------------------
+        // Run on touch
+
+        public bool RunOnTouch { get; set; }
+
         //----------------------//------------------------//
 
         public NpcBase(string name)
@@ -91,9 +101,12 @@ namespace AdvJam2017.NPCs
             _textWindowComponent = entity.getComponent<TextWindowComponent>();
 
             loadTexture();
-            createSprite();
-            createAnimations();
-            sprite.play(default(Animations));
+            if (!Invisible)
+            {
+                createSprite();
+                createAnimations();
+                sprite.play(default(Animations));
+            }
         }
 
         protected abstract void loadTexture();
@@ -123,6 +136,15 @@ namespace AdvJam2017.NPCs
         private IEnumerator actionList()
         {
             var index = 0;
+            if (_commands.Count == 0)
+            {
+                Core.getGlobalManager<InputManager>().IsBusy = false;
+                if (!Invisible)
+                {
+                    sprite.flipX = FlipX;
+                }
+                yield break;
+            }
             while (true)
             {
                 Input.update();
@@ -135,7 +157,10 @@ namespace AdvJam2017.NPCs
                 if (++index >= _commands.Count)
                 {
                     Core.getGlobalManager<InputManager>().IsBusy = false;
-                    sprite.flipX = FlipX;
+                    if (!Invisible)
+                    {
+                        sprite.flipX = FlipX;
+                    }
                     yield break;
                 }
             }
@@ -147,7 +172,10 @@ namespace AdvJam2017.NPCs
             {
                 var player = Core.getGlobalManager<SystemManager>().playerEntity;
                 var differece = transform.position - player.position;
-                sprite.flipX = differece.X > 0;
+                if (!Invisible)
+                {
+                    sprite.flipX = differece.X > 0;
+                }
             }
             _commands.Clear();
             createActionList();
@@ -161,9 +189,21 @@ namespace AdvJam2017.NPCs
             _commands.Add(new NpcMessageCommand(this, message, maxWidth));
         }
 
+        protected void playerMessage(string message, float maxWidth = -1.0f)
+        {
+            var player = entity.scene.findEntity("player");
+            _commands.Add(new NpcMessageTargetCommand(this, player, message, maxWidth));
+        }
+
         protected void closeMessage()
         {
             _commands.Add(new NpcCloseMessageCommand(this));
+        }
+
+        protected void closePlayerMessage()
+        {
+            var player = entity.scene.findEntity("player");
+            _commands.Add(new NpcCloseTargetMessageCommand(this, player));
         }
 
         protected void wait(float duration)
@@ -221,6 +261,11 @@ namespace AdvJam2017.NPCs
         protected void cinematic(float amount, float duration)
         {
             _commands.Add(new NpcCinematicCommand(this, amount, duration));
+        }
+
+        protected void movePlayer(Vector2 velocity)
+        {
+            _commands.Add(new NpcMovePlayerCommand(this, velocity));
         }
 
         #endregion

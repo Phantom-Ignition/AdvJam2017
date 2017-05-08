@@ -60,6 +60,12 @@ namespace AdvJam2017.Components.Player
         private FiniteStateMachine<PlayerState, PlayerComponent> _fsm;
         public FiniteStateMachine<PlayerState, PlayerComponent> FSM => _fsm;
 
+        //--------------------------------------------------
+        // Forced Movement
+
+        private bool _forceMovement;
+        private Vector2 _forceMovementVelocity;
+
         //----------------------//------------------------//
 
         public override void initialize()
@@ -138,13 +144,26 @@ namespace AdvJam2017.Components.Player
             _platformerObject.jumpHeight = 5 * 16;
         }
 
+        public void forceMovement(Vector2 velocity)
+        {
+            if (velocity == Vector2.Zero)
+            {
+                _forceMovement = false;
+            }
+            else
+            {
+                _forceMovement = true;
+                _forceMovementVelocity = velocity;
+            }
+        }
+
         public void update()
         {
             // Update FSM
             _fsm.update();
-            
-            var velocity = _movementInput.value;
-            if (Core.getGlobalManager<InputManager>().isMovementAvailable() && (velocity > 0 || velocity < 0))
+
+            var velocity = _forceMovement ? _forceMovementVelocity.X : _movementInput.value;
+            if (canMove() && (velocity > 0 || velocity < 0))
             {
                 var po = _platformerObject;
                 var mms = po.maxMoveSpeed;
@@ -161,6 +180,11 @@ namespace AdvJam2017.Components.Player
             {
                 _platformerObject.velocity.X = 0;
             }
+        }
+
+        private bool canMove()
+        {
+            return Core.getGlobalManager<InputManager>().isMovementAvailable() || _forceMovement;
         }
 
         public void SetAnimation(Animations animation)

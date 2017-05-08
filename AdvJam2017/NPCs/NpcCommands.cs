@@ -2,6 +2,9 @@
 using AdvJam2017.Managers;
 using AdvJam2017.NPCs;
 using AdvJam2017.Systems;
+using AdvJam2017.Components.Windows;
+using Microsoft.Xna.Framework;
+using AdvJam2017.Components.Player;
 
 namespace NezTest.NPCs.Commands
 {
@@ -51,6 +54,41 @@ namespace NezTest.NPCs.Commands
         }
     }
 
+    public class NpcMessageTargetCommand : NpcCommand
+    {
+        private TextWindowComponent _textWindowComponent;
+        private string _text;
+        private float _maxWidth;
+
+        public NpcMessageTargetCommand(NpcBase npc, Entity target, string text, float maxWidth) : base(npc)
+        {
+            _text = text;
+            _maxWidth = maxWidth;
+            _textWindowComponent = target.getComponent<TextWindowComponent>();
+        }
+
+        public override void start()
+        {
+            _textWindowComponent.start(_text, _maxWidth);
+        }
+
+        public override bool update()
+        {
+            if (Core.getGlobalManager<InputManager>().InteractionButton.isPressed)
+            {
+                if (_textWindowComponent.Playing)
+                {
+                    _textWindowComponent.forceFinish();
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     public class NpcCloseMessageCommand : NpcCommand
     {
         public NpcCloseMessageCommand(NpcBase npc) : base(npc)
@@ -59,6 +97,26 @@ namespace NezTest.NPCs.Commands
         public override void start()
         {
             _npc.TextWindowComponent.close();
+        }
+
+        public override bool update()
+        {
+            return true;
+        }
+    }
+
+    public class NpcCloseTargetMessageCommand : NpcCommand
+    {
+        private TextWindowComponent _textWindowComponent;
+
+        public NpcCloseTargetMessageCommand(NpcBase npc, Entity target) : base(npc)
+        {
+            _textWindowComponent = target.getComponent<TextWindowComponent>();
+        }
+
+        public override void start()
+        {
+            _textWindowComponent.close();
         }
 
         public override bool update()
@@ -188,6 +246,28 @@ namespace NezTest.NPCs.Commands
         {
             var sys = Core.getGlobalManager<SystemManager>();
             sys.tween("cinematicAmount", _amount, _duration).setEaseType(Nez.Tweens.EaseType.SineInOut).start(); 
+        }
+
+        public override bool update()
+        {
+            return true;
+        }
+    }
+
+    public class NpcMovePlayerCommand : NpcCommand
+    {
+        private Vector2 _velocity;
+        private float _duration;
+
+        public NpcMovePlayerCommand(NpcBase npc, Vector2 velocity) : base(npc)
+        {
+            _velocity = velocity;
+        }
+
+        public override void start()
+        {
+            var player = _npc.entity.scene.findEntity("player");
+            player.getComponent<PlayerComponent>().forceMovement(_velocity);
         }
 
         public override bool update()
