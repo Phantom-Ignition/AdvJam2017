@@ -43,11 +43,13 @@ namespace AdvJam2017.Components.Player
         // Platformer Object
 
         PlatformerObject _platformerObject;
+        public PlatformerObject platformerObject => _platformerObject;
 
         //--------------------------------------------------
         // Collision State
-
+        
         public TiledMapMover.CollisionState CollisionState => _platformerObject.collisionState;
+        public bool ForcedGround { get; set; }
 
         //--------------------------------------------------
         // Velocity
@@ -180,11 +182,18 @@ namespace AdvJam2017.Components.Player
             {
                 _platformerObject.velocity.X = 0;
             }
+
+            ForcedGround = false;
         }
 
         private bool canMove()
         {
             return Core.getGlobalManager<InputManager>().isMovementAvailable() || _forceMovement;
+        }
+
+        public bool isOnGround()
+        {
+            return ForcedGround || _platformerObject.collisionState.below;
         }
 
         public void SetAnimation(Animations animation)

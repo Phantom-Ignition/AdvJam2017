@@ -31,7 +31,7 @@ namespace AdvJam2017
             base.Draw(new GameTime());
 
             // Set first scene
-            getGlobalManager<SystemManager>().setMapId(2);
+            getGlobalManager<SystemManager>().setMapId(3);
             scene = new SceneMap();
         }
     }

@@ -5,8 +5,10 @@ using AdvJam2017.Components.Windows;
 using AdvJam2017.Extensions;
 using AdvJam2017.Managers;
 using AdvJam2017.NPCs;
+using AdvJam2017.Scenes.SceneMapExtensions;
 using AdvJam2017.Systems;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nez;
 using Nez.Particles;
@@ -40,6 +42,11 @@ namespace AdvJam2017.Scenes
         
         private TiledMap _tiledMap;
 
+        //--------------------------------------------------
+        // Map Extensions
+
+        private List<ISceneMapExtensionable> _mapExtensions;
+
         //----------------------//------------------------//
 
         public override void initialize()
@@ -50,7 +57,9 @@ namespace AdvJam2017.Scenes
             setupEntityProcessors();
             setupNpcs();
             setupParticles();
+            setupWater();
             setupMapTexts();
+            setupMapExtensions();
             setupTransfers();
             setupPostProcessors();
         }
@@ -195,6 +204,29 @@ namespace AdvJam2017.Scenes
             addEntityProcessor(new TransferSystem(new Matcher().all(typeof(TransferComponent)), player));
         }
 
+        private void setupWater()
+        {
+            var environmentObjects = _tiledMap.getObjectGroup("environment");
+            if (environmentObjects != null)
+            {
+                var waterObjects = environmentObjects.objects.Where(obj => obj.type == "water").ToList();
+                for (var i = 0; i < waterObjects.Count; i++)
+                {
+                    var waterObj = waterObjects[i];
+                    var entity = createEntity(string.Format("water:{0}", i));
+                    var reflectionPlane = new WaterReflectionPlane(waterObj.width, waterObj.height) { renderLayer = WATER_RENDER_LAYER };
+                    var material = reflectionPlane.getMaterial<WaterReflectionMaterial>();
+                    material.effect.normalMap = content.Load<Texture2D>(Content.System.waterNormalMap);
+                    material.effect.perspectiveCorrectionIntensity = 0.0f;
+                    material.effect.normalMagnitude = 0.015f;
+                    entity.addComponent(reflectionPlane);
+                    entity.position = waterObj.position;
+                }
+
+                addRenderer(new RenderLayerRenderer(0, WATER_RENDER_LAYER));
+            }
+        }
+
         private void setupMapTexts()
         {
             var textObjects = _tiledMap.getObjectGroup("texts");
@@ -225,6 +257,23 @@ namespace AdvJam2017.Scenes
             }
         }
 
+        private void setupMapExtensions()
+        {
+            _mapExtensions = new List<ISceneMapExtensionable>();
+
+            if (!_tiledMap.properties.ContainsKey("mapExtensions")) return;
+
+            var extensions = _tiledMap.properties["mapExtensions"].Split(',').Select(s => s.Trim()).ToArray();
+
+            foreach (var extension in extensions)
+            {
+                var extensionInstance = (ISceneMapExtensionable)Activator.CreateInstance(Type.GetType("AdvJam2017.Scenes.SceneMapExtensions." + extension));
+                extensionInstance.Scene = this;
+                extensionInstance.initialize();
+                _mapExtensions.Add(extensionInstance);
+            }
+        }
+
         private void setupPostProcessors()
         {
             _cinematicPostProcessor = addPostProcessor(new CinematicLetterboxPostProcessor(1));
@@ -243,10 +292,12 @@ namespace AdvJam2017.Scenes
 
             if (Input.isKeyPressed(Keys.C))
             {
-                var sys = Core.getGlobalManager<SystemManager>();
-                sys.tween("cinematicAmount", 50.0f, 2.0f).start();
             }
 
+            // Update extensions
+            _mapExtensions.ForEach(extension => extension.update());
+
+            // Update cinematic
             var cinematicAmount = Core.getGlobalManager<SystemManager>().cinematicAmount;
             if (cinematicAmount > 0)
             {

@@ -19,7 +19,7 @@ namespace AdvJam2017.Components.Player.PlayerStates
                 {
                     fsm.pushState(new SlashingState());
                 }
-                if (entity.CollisionState.below && Input.isKeyDown(Keys.Z))
+                if (entity.isOnGround() && Input.isKeyDown(Keys.Z))
                 {
                     fsm.changeState(new JumpingState(true));
                 }
@@ -37,7 +37,7 @@ namespace AdvJam2017.Components.Player.PlayerStates
         }
         public override void update()
         {
-            if (entity.CollisionState.below)
+            if (entity.isOnGround())
             {
                 if (entity.Velocity.X > 0 || entity.Velocity.X < 0)
                 {
@@ -76,7 +76,7 @@ namespace AdvJam2017.Components.Player.PlayerStates
 
         public override void update()
         {
-            if (entity.CollisionState.below)
+            if (entity.isOnGround())
             {
                 entity.SetAnimation(PlayerComponent.Animations.JumpLanding);
                 _landTime += Time.deltaTime;

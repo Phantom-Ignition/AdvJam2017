@@ -5,7 +5,7 @@ using Nez.Tiled;
 
 namespace AdvJam2017.Components
 {
-    class PlatformerObject : Component, IUpdatable
+    public class PlatformerObject : Component, IUpdatable
     {
         //--------------------------------------------------
         // Physics
@@ -19,6 +19,7 @@ namespace AdvJam2017.Components
         // Tiled Mover
 
         TiledMapMover _mover;
+        public TiledMapMover mover => _mover;
 
         //--------------------------------------------------
         // Box Collider

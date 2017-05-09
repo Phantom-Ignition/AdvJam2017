@@ -17,7 +17,14 @@ namespace Nez
 		{
 			public const string map1 = @"maps\map1";
 			public const string map2 = @"maps\map2";
+			public const string map3 = @"maps\map3";
 			public const string tilesheet = @"maps\tilesheet";
+		}
+
+		public static class Misc
+		{
+			public const string raft = @"misc\raft";
+			public const string stakeWithRope = @"misc\stakeWithRope";
 		}
 
 		public static class Particles
@@ -28,6 +35,7 @@ namespace Nez
 
 		public static class System
 		{
+			public const string waterNormalMap = @"system\waterNormalMap";
 			public const string windowskin = @"system\windowskin";
 		}
 
