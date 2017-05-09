@@ -11,9 +11,7 @@ namespace AdvJam2017.NPCs
 
         protected override void createActionList()
         {
-            setGlobalSwitch("picked_up_bag", true);
-            /*
-            cinematicIn(30.0f, 1.0f);
+            cinematicIn(10.0f, 1.0f);
             playerMessage("Oh, I found the bag!");
             closePlayerMessage();
             wait(0.5f);
@@ -21,12 +19,23 @@ namespace AdvJam2017.NPCs
             setGlobalSwitch("picked_up_bag", true);
             playerMessage("Wait, why is the raft moving?!");
             playerMessage("I don't know how to swim!");
-            movePlayer(10.0f * Vector2.UnitX);
+            movePlayer(-10.0f * Vector2.UnitX);
             wait(0.3f);
             movePlayer(Vector2.Zero);
+            setGlobalSwitch("replace_raft_right_barrier", true);
             playerMessage("Where am I going?!");
             closePlayerMessage();
-            */
+            setGlobalSwitch("can_rain", true);
+            wait(4.0f);
+            playerMessage("Why did it have to rain right now?!");
+            closePlayerMessage();
+            setGlobalSwitch("can_rain_higher", true);
+            wait(2.0f);
+            playerMessage("The rain is getting worst!");
+            closePlayerMessage();
+            wait(1.0f);
+            playerMessage("Damn it! Is it my end?");
+            closePlayerMessage();
         }
 
         protected override void createAnimations()

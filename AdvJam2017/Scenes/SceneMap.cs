@@ -5,6 +5,7 @@ using AdvJam2017.Components.Windows;
 using AdvJam2017.Extensions;
 using AdvJam2017.Managers;
 using AdvJam2017.NPCs;
+using AdvJam2017.PostProcessors;
 using AdvJam2017.Scenes.SceneMapExtensions;
 using AdvJam2017.Systems;
 using Microsoft.Xna.Framework;
@@ -267,10 +268,11 @@ namespace AdvJam2017.Scenes
                 _mapExtensions.Add(extensionInstance);
             }
         }
-
+            
         private void setupPostProcessors()
         {
             Core.getGlobalManager<SystemManager>().cinematicLetterboxPostProcessor = addPostProcessor(new CinematicLetterboxPostProcessor(1));
+            Core.getGlobalManager<SystemManager>().flashPostProcessor = addPostProcessor(new FlashPostProcessor(0));
         }
 
         public void reserveTransfer(TransferComponent transferComponent)
@@ -286,6 +288,9 @@ namespace AdvJam2017.Scenes
 
             if (Input.isKeyPressed(Keys.C))
             {
+                Core.startCoroutine(
+                    Core.getGlobalManager<SystemManager>().flashPostProcessor.animate(1f)
+                );
             }
 
             // Update extensions

@@ -246,13 +246,14 @@ namespace NezTest.NPCs.Commands
 
         public override void start()
         {
+            var sysManager = Core.getGlobalManager<SystemManager>();
             if (_isIn)
             {
-                Core.getGlobalManager<SystemManager>().cinematicLetterboxPostProcessor.animateIn(_amount, _duration);
+                Core.startCoroutine(sysManager.cinematicLetterboxPostProcessor.animateIn(_amount, _duration));
             }
             else
             {
-                Core.getGlobalManager<SystemManager>().cinematicLetterboxPostProcessor.animateOut(_duration);
+                Core.startCoroutine(sysManager.cinematicLetterboxPostProcessor.animateOut(_duration));
             }
             /*
             var sys = Core.getGlobalManager<SystemManager>();

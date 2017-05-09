@@ -27,7 +27,7 @@ namespace AdvJam2017.Components.Map
         private ITween<float> _impactTween; 
         private float _impact;
 
-        private float _raftMovement;
+        private bool _stopRaft;
 
         public RaftComponent(Entity player, Entity bag)
         {
@@ -38,7 +38,7 @@ namespace AdvJam2017.Components.Map
 
         public override void onAddedToEntity()
         {
-            _position = new Vector2(191, 228);
+            _position = new Vector2(832, 228);
 
             var raftTexture = entity.scene.content.Load<Texture2D>(Content.Misc.raft);
             _sprite = entity.addComponent(new Sprite(raftTexture));
@@ -48,7 +48,7 @@ namespace AdvJam2017.Components.Map
             var h = raftTexture.Height;
             _raftCollider = entity.addComponent(new BoxCollider(-w / 2, -h / 2, w, h));
 
-            _leftBarrierCollider = entity.addComponent(new BoxCollider(-w / 2, -128, 1, 128));
+            _leftBarrierCollider = entity.addComponent(new BoxCollider(-w / 2 + 10, -128, 1, 128));
             _rightBarrierCollider = entity.addComponent(new BoxCollider(w / 2, -128, 1, 128));
             _rightBarrierCollider.enabled = false;
 
@@ -103,17 +103,24 @@ namespace AdvJam2017.Components.Map
                 _bagEntity.getComponent<PlatformerObject>().velocity.Y = 0.0f;
             }
 
-            if (Core.getGlobalManager<SystemManager>().getSwitch("picked_up_bag"))
+            if (Core.getGlobalManager<SystemManager>().getSwitch("picked_up_bag") && !_stopRaft)
             {
-                _rightBarrierCollider.enabled = true;
-                _raftMovement -= 10.0f * Time.deltaTime;
-
-                var movementVector = _raftMovement * Vector2.UnitX;
-
+                var movementVector = -40.0f * Time.deltaTime * Vector2.UnitX;
                 _position += movementVector;
-                if (_playerOnTop > 5.0f) {
-                    _playerEntity.transform.position += movementVector;
+                
+                if (!_rightBarrierCollider.enabled || Core.getGlobalManager<SystemManager>().getSwitch("replace_raft_right_barrier"))
+                {
+                    Core.getGlobalManager<SystemManager>().setSwitch("replace_raft_right_barrier", false);
+                    var x = _playerEntity.transform.position.X - _position.X + _playerEntity.getComponent<BoxCollider>().width / 2;
+                    _rightBarrierCollider.localOffset = new Vector2(x, -_rightBarrierCollider.height / 2);
+                    _rightBarrierCollider.enabled = true;
                 }
+            }
+
+            if (_position.X <= 480)
+            {
+                _stopRaft = true;
+                Core.getGlobalManager<SystemManager>().setSwitch("make_it_rain", true);
             }
         }
 

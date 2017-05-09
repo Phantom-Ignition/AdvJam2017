@@ -13,6 +13,11 @@ namespace Nez
 			public const string elliotMother = @"characters\ElliotMother";
 		}
 
+		public static class Effects
+		{
+            public const string flash = @"effects\flash";
+		}
+
 		public static class Maps
 		{
 			public const string map1 = @"maps\map1";
@@ -31,6 +36,8 @@ namespace Nez
 		public static class Particles
 		{
 			public const string poison = @"particles\Poison";
+			public const string rain = @"particles\Rain";
+			public const string rainTexture = @"particles\rainTexture";
 			public const string texture = @"particles\texture";
 		}
 

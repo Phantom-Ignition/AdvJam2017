@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AdvJam2017.PostProcessors;
+using Microsoft.Xna.Framework;
 using Nez;
 using Nez.Tiled;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace AdvJam2017.Managers
         // Postprocessors
         
         public CinematicLetterboxPostProcessor cinematicLetterboxPostProcessor;
+        public FlashPostProcessor flashPostProcessor;
 
         //--------------------------------------------------
         // Player
@@ -63,9 +65,19 @@ namespace AdvJam2017.Managers
             _spawnPosition = position;
         }
 
+        public void setSwitch(string name, bool value)
+        {
+            switches[name] = value;
+        }
+
         public bool getSwitch(string name)
         {
             return switches.ContainsKey(name) ? switches[name] : false;
+        }
+
+        public void setVariable(string name, int value)
+        {
+            variables[name] = value;
         }
 
         public int getVariable(string name)
