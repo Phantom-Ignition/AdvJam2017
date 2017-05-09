@@ -15,8 +15,8 @@ namespace AdvJam2017.Managers
 
         //--------------------------------------------------
         // Postprocessors
-
-        public float cinematicAmount;
+        
+        public CinematicLetterboxPostProcessor cinematicLetterboxPostProcessor;
 
         //--------------------------------------------------
         // Player
@@ -61,6 +61,16 @@ namespace AdvJam2017.Managers
         public void setSpawnPosition(Vector2 position)
         {
             _spawnPosition = position;
+        }
+
+        public bool getSwitch(string name)
+        {
+            return switches.ContainsKey(name) ? switches[name] : false;
+        }
+
+        public int getVariable(string name)
+        {
+            return variables.ContainsKey(name) ? variables[name] : 0;
         }
 
         public void update()

@@ -25,12 +25,12 @@ namespace AdvJam2017.NPCs
             }
             else
             {
-                cinematic(30, 1);
+                cinematicIn(30, 1);
                 wait(2);
                 focusCamera(entity);
                 message("Elliot, you will be late to the guard register, stop poking this thing and hurry!");
                 closeMessage();
-                cinematic(0, 1);
+                cinematicOut(0, 1);
                 focusCamera(Core.getGlobalManager<SystemManager>().playerEntity);
                 setSwitch("started", true);
             }

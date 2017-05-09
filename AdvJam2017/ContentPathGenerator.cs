@@ -23,6 +23,7 @@ namespace Nez
 
 		public static class Misc
 		{
+			public const string bag = @"misc\bag";
 			public const string raft = @"misc\raft";
 			public const string stakeWithRope = @"misc\stakeWithRope";
 		}

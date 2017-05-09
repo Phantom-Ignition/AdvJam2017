@@ -76,6 +76,11 @@ namespace AdvJam2017.NPCs
         }
 
         //--------------------------------------------------
+        // Object Rect
+
+        public Rectangle ObjectRect { get; set; }
+
+        //--------------------------------------------------
         // Invisible
 
         public bool Invisible { get; set; }
@@ -101,6 +106,7 @@ namespace AdvJam2017.NPCs
             _textWindowComponent = entity.getComponent<TextWindowComponent>();
 
             loadTexture();
+            createCollider();
             if (!Invisible)
             {
                 createSprite();
@@ -111,6 +117,18 @@ namespace AdvJam2017.NPCs
 
         protected abstract void loadTexture();
         protected abstract void createActionList();
+
+        protected virtual void createCollider()
+        {
+            if (Invisible)
+            {
+                entity.addComponent(new BoxCollider(0, 0, ObjectRect.Width, ObjectRect.Height));
+            }
+            else
+            {
+                entity.addComponent(new BoxCollider(-14, -24, 32, 44));
+            }
+        }
 
         private void createSprite()
         {
@@ -258,14 +276,24 @@ namespace AdvJam2017.NPCs
             _commands.Add(new NpcFocusCameraCommand(this, target));
         }
 
-        protected void cinematic(float amount, float duration)
+        protected void cinematicIn(float amount, float duration)
         {
-            _commands.Add(new NpcCinematicCommand(this, amount, duration));
+            _commands.Add(new NpcCinematicCommand(this, amount, duration, true));
+        }
+
+        protected void cinematicOut(float amount, float duration)
+        {
+            _commands.Add(new NpcCinematicCommand(this, amount, duration, false));
         }
 
         protected void movePlayer(Vector2 velocity)
         {
             _commands.Add(new NpcMovePlayerCommand(this, velocity));
+        }
+
+        protected void hideTexture()
+        {
+            _commands.Add(new NpcHideTextureCommand(this, true));
         }
 
         #endregion

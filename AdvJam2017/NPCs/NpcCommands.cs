@@ -235,17 +235,29 @@ namespace NezTest.NPCs.Commands
     {
         private float _amount;
         private float _duration;
+        private bool _isIn;
 
-        public NpcCinematicCommand(NpcBase npc, float amount, float duration) : base(npc)
+        public NpcCinematicCommand(NpcBase npc, float amount, float duration, bool isIn) : base(npc)
         {
             _amount = amount;
             _duration = duration;
+            _isIn = isIn;
         }
 
         public override void start()
         {
+            if (_isIn)
+            {
+                Core.getGlobalManager<SystemManager>().cinematicLetterboxPostProcessor.animateIn(_amount, _duration);
+            }
+            else
+            {
+                Core.getGlobalManager<SystemManager>().cinematicLetterboxPostProcessor.animateOut(_duration);
+            }
+            /*
             var sys = Core.getGlobalManager<SystemManager>();
             sys.tween("cinematicAmount", _amount, _duration).setEaseType(Nez.Tweens.EaseType.SineInOut).start(); 
+            */
         }
 
         public override bool update()
@@ -268,6 +280,26 @@ namespace NezTest.NPCs.Commands
         {
             var player = _npc.entity.scene.findEntity("player");
             player.getComponent<PlayerComponent>().forceMovement(_velocity);
+        }
+
+        public override bool update()
+        {
+            return true;
+        }
+    }
+
+    public class NpcHideTextureCommand : NpcCommand
+    {
+        private bool _hide;
+
+        public NpcHideTextureCommand(NpcBase npc, bool hide) : base(npc)
+        {
+            _hide = hide;
+        }
+
+        public override void start()
+        {
+            _npc.sprite.setEnabled(!_hide);
         }
 
         public override bool update()

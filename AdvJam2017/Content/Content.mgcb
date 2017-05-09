@@ -10,10 +10,10 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\Nez-Samples\Nez\Nez.PipelineImporter\bin\Debug\Nez.PipelineImporter.dll
-/reference:..\..\..\Nez-Samples\Nez\Nez.PipelineImporter\bin\Debug\Nez.dll
-/reference:..\..\..\Nez-Samples\Nez\Nez.PipelineImporter\bin\Debug\Newtonsoft.Json.dll
-/reference:..\..\..\Nez-Samples\Nez\Nez.PipelineImporter\bin\Debug\Ionic.ZLib.dll
+/reference:..\..\..\Nez\Nez.PipelineImporter\bin\Debug\Nez.PipelineImporter.dll
+/reference:..\..\..\Nez\Nez.PipelineImporter\bin\Debug\Nez.dll
+/reference:..\..\..\Nez\Nez.PipelineImporter\bin\Debug\Newtonsoft.Json.dll
+/reference:..\..\..\Nez\Nez.PipelineImporter\bin\Debug\Ionic.ZLib.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -61,7 +61,6 @@
 #begin particles/Poison.pex
 /importer:ParticleDesignerImporter
 /processor:ParticleDesignerProcessor
-/processorParam:compressTextures=False
 /build:particles/Poison.pex
 
 #begin particles/texture.png
@@ -157,4 +156,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:misc/stakeWithRope.png
+
+#begin misc/bag.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:misc/bag.png
 

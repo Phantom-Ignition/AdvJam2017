@@ -15,7 +15,6 @@ using Nez.Particles;
 using Nez.Tiled;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace AdvJam2017.Scenes
@@ -134,17 +133,12 @@ namespace AdvJam2017.Scenes
                 var npcEntity = createEntity(string.Format("{0}:{1}", npc.name, names[npc.name]));
                 var npcComponent = (NpcBase)Activator.CreateInstance(Type.GetType("AdvJam2017.NPCs." + npc.type), npc.name);
                 npcComponent.setRenderLayer(MISC_RENDER_LAYER);
+                npcComponent.ObjectRect = new Rectangle(0, 0, npc.width, npc.height);
                 npcEntity.addComponent(npcComponent);
                 npcEntity.addComponent<TextWindowComponent>();
                 npcEntity.addComponent(new TiledMapMover(_tiledMap.getLayer<TiledTileLayer>(collisionLayer)));
 
-                if (npcComponent.Invisible)
-                {
-                    npcEntity.addComponent(new BoxCollider(npc.x, npc.y, npc.width, npc.height));
-                }
-                else
-                {
-                    npcEntity.addComponent(new BoxCollider(-14f, -24f, 32f, 44f));
+                if (!npcComponent.Invisible) {
                     npcEntity.position = npc.position + new Vector2(npc.width, npc.height) / 2;
                     npcEntity.addComponent<PlatformerObject>();
                 }
@@ -154,7 +148,7 @@ namespace AdvJam2017.Scenes
                 {
                     npcComponent.FlipX = true;
                 }
-                if (npc.properties.ContainsKey("autorun") && npc.properties["flipX"] == "true")
+                if (npc.properties.ContainsKey("autorun") && npc.properties["autorun"] == "true")
                 {
                     getEntityProcessor<NpcInteractionSystem>().addAutorun(npcComponent);
                 }
@@ -276,7 +270,7 @@ namespace AdvJam2017.Scenes
 
         private void setupPostProcessors()
         {
-            _cinematicPostProcessor = addPostProcessor(new CinematicLetterboxPostProcessor(1));
+            Core.getGlobalManager<SystemManager>().cinematicLetterboxPostProcessor = addPostProcessor(new CinematicLetterboxPostProcessor(1));
         }
 
         public void reserveTransfer(TransferComponent transferComponent)
@@ -298,6 +292,7 @@ namespace AdvJam2017.Scenes
             _mapExtensions.ForEach(extension => extension.update());
 
             // Update cinematic
+            /*
             var cinematicAmount = Core.getGlobalManager<SystemManager>().cinematicAmount;
             if (cinematicAmount > 0)
             {
@@ -307,7 +302,7 @@ namespace AdvJam2017.Scenes
             else
             {
                 _cinematicPostProcessor.enabled = false;
-            }
+            }*/
         }
     }
 }
