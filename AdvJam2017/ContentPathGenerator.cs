@@ -13,16 +13,12 @@ namespace Nez
 			public const string elliotMother = @"characters\ElliotMother";
 		}
 
-		public static class Effects
-		{
-            public const string flash = @"effects\flash";
-		}
-
 		public static class Maps
 		{
 			public const string map1 = @"maps\map1";
 			public const string map2 = @"maps\map2";
 			public const string map3 = @"maps\map3";
+			public const string map4 = @"maps\map4";
 			public const string tilesheet = @"maps\tilesheet";
 		}
 
@@ -43,6 +39,8 @@ namespace Nez
 
 		public static class System
 		{
+			public const string inventoryCursor = @"system\inventoryCursor";
+			public const string itemsheet = @"system\itemsheet";
 			public const string waterNormalMap = @"system\waterNormalMap";
 			public const string windowskin = @"system\windowskin";
 		}

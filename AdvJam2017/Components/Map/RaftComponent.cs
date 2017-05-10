@@ -5,7 +5,6 @@ using Nez.Sprites;
 using AdvJam2017.Components.Player;
 using Nez.Tweens;
 using AdvJam2017.Managers;
-using System;
 
 namespace AdvJam2017.Components.Map
 {

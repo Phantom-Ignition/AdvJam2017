@@ -18,6 +18,7 @@ namespace AdvJam2017
             // Register Global Managers
             registerGlobalManager(new InputManager());
             registerGlobalManager(new SystemManager());
+            registerGlobalManager(new PlayerManager());
         }
 
         protected override void Initialize()
@@ -31,7 +32,7 @@ namespace AdvJam2017
             base.Draw(new GameTime());
 
             // Set first scene
-            getGlobalManager<SystemManager>().setMapId(3);
+            getGlobalManager<SystemManager>().setMapId(4);
             scene = new SceneMap();
         }
     }

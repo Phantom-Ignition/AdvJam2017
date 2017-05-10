@@ -1,5 +1,4 @@
 ﻿using AdvJam2017.Components;
-using AdvJam2017.Components.Player;
 using AdvJam2017.Components.Sprites;
 using AdvJam2017.Components.Windows;
 using AdvJam2017.Managers;
@@ -294,6 +293,11 @@ namespace AdvJam2017.NPCs
         protected void hideTexture()
         {
             _commands.Add(new NpcHideTextureCommand(this, true));
+        }
+
+        protected void mapTransfer(int mapId, int mapX, int mapY)
+        {
+            _commands.Add(new NpcMapTransferCommand(this, mapId, mapX, mapY));
         }
 
         #endregion

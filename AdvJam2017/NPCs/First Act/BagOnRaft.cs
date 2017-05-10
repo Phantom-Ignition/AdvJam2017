@@ -31,11 +31,14 @@ namespace AdvJam2017.NPCs
             closePlayerMessage();
             setGlobalSwitch("can_rain_higher", true);
             wait(2.0f);
+            // Set new graphic
             playerMessage("The rain is getting worst!");
             closePlayerMessage();
             wait(1.0f);
             playerMessage("Damn it! Is it my end?");
             closePlayerMessage();
+            wait(1.0f);
+            //mapTransfer()
         }
 
         protected override void createAnimations()

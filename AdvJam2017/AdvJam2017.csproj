@@ -61,7 +61,14 @@
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="FSM\FiniteStateMachine.cs" />
     <Compile Include="GameMain.cs" />
+    <Compile Include="Inventory\InventoryComponent.cs" />
+    <Compile Include="Inventory\Items\GreenItem.cs" />
+    <Compile Include="Inventory\Items\ItemBase.cs" />
+    <Compile Include="Inventory\Items\ItemIcons.cs" />
+    <Compile Include="Inventory\Items\RedItem.cs" />
+    <Compile Include="Inventory\PlayerInventory.cs" />
     <Compile Include="Managers\InputManager.cs" />
+    <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\SystemManager.cs" />
     <Compile Include="NPCs\First Act\BagOnRaft.cs" />
     <Compile Include="NPCs\First Act\ElderMouse.cs" />

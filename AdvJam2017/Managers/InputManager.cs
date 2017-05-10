@@ -14,6 +14,12 @@ namespace AdvJam2017.Managers
         private VirtualIntegerAxis _movementAxis;
         public VirtualIntegerAxis MovementAxis => _movementAxis;
 
+        private VirtualButton _leftButton;
+        public VirtualButton LeftButton => _leftButton;
+        
+        private VirtualButton _rightButton;
+        public VirtualButton RightButton => _rightButton;
+
         // Blocks all the interaction stuff
         public bool IsBusy { get; set; }
 
@@ -30,6 +36,12 @@ namespace AdvJam2017.Managers
 
             _movementAxis = new VirtualIntegerAxis();
             _movementAxis.nodes.Add(new VirtualAxis.KeyboardKeys(VirtualInput.OverlapBehavior.TakeNewer, Keys.Left, Keys.Right));
+
+            _leftButton = new VirtualButton();
+            _leftButton.nodes.Add(new VirtualButton.KeyboardKey(Keys.Left));
+
+            _rightButton = new VirtualButton();
+            _rightButton.nodes.Add(new VirtualButton.KeyboardKey(Keys.Right));
         }
 
         public bool isMovementAvailable()

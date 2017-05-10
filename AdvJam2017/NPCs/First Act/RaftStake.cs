@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Nez;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdvJam2017.NPCs
 {
@@ -12,13 +8,6 @@ namespace AdvJam2017.NPCs
     {
         public RaftStake(string name) : base(name)
         { }
-
-        public override void onAddedToEntity()
-        {
-            base.onAddedToEntity();
-
-            //transform.position += 5 * Vector2.UnitY;
-        }
 
         protected override void createAnimations()
         {

@@ -3,6 +3,7 @@ using AdvJam2017.Components.Map;
 using AdvJam2017.Components.Player;
 using AdvJam2017.Components.Windows;
 using AdvJam2017.Extensions;
+using AdvJam2017.Inventory;
 using AdvJam2017.Managers;
 using AdvJam2017.NPCs;
 using AdvJam2017.PostProcessors;
@@ -118,6 +119,11 @@ namespace AdvJam2017.Scenes
             playerComponent.sprite.renderLayer = PLAYER_RENDER_LAYER;
 
             Core.getGlobalManager<SystemManager>().setPlayer(player);
+
+            var inventory = createEntity("player-inventory");
+            inventory.addComponent<InventoryComponent>();
+            inventory.position = new Vector2(100, 20);
+            inventory.getComponent<InventoryComponent>().renderLayer = 1;
         }
 
         private void setupNpcs()
@@ -279,6 +285,14 @@ namespace AdvJam2017.Scenes
         {
             Core.getGlobalManager<SystemManager>().setMapId(transferComponent.destinyId);
             Core.getGlobalManager<SystemManager>().setSpawnPosition(transferComponent.destinyPosition);
+            Core.startSceneTransition(new FadeTransition(() => new SceneMap()));
+        }
+
+        public void reserveTransfer(int mapId, int mapX, int mapY)
+        {
+            var spawnPosition = new Vector2(mapX, mapY);
+            Core.getGlobalManager<SystemManager>().setMapId(mapId);
+            Core.getGlobalManager<SystemManager>().setSpawnPosition(spawnPosition);
             Core.startSceneTransition(new FadeTransition(() => new SceneMap()));
         }
 
