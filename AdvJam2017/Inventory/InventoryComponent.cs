@@ -127,11 +127,6 @@ namespace AdvJam2017.Inventory
             graphics.batcher.drawString(GameMain.bigBitmapFont, item.name, position, Color.White);
         }
 
-        private void drawItemDescription(Graphics graphics)
-        {
-
-        }
-
         void IDisposable.Dispose()
         {
             _backgroundTexture.Dispose();
