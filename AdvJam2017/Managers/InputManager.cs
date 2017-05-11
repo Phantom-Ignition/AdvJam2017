@@ -20,6 +20,12 @@ namespace AdvJam2017.Managers
         private VirtualButton _rightButton;
         public VirtualButton RightButton => _rightButton;
 
+        private VirtualButton _upButton;
+        public VirtualButton UpButton => _upButton;
+        
+        private VirtualButton _downButton;
+        public VirtualButton DownButton => _downButton;
+
         // Blocks all the interaction stuff
         public bool IsBusy { get; set; }
 
@@ -42,6 +48,12 @@ namespace AdvJam2017.Managers
 
             _rightButton = new VirtualButton();
             _rightButton.nodes.Add(new VirtualButton.KeyboardKey(Keys.Right));
+
+            _upButton = new VirtualButton();
+            _upButton.nodes.Add(new VirtualButton.KeyboardKey(Keys.Up));
+
+            _downButton = new VirtualButton();
+            _downButton.nodes.Add(new VirtualButton.KeyboardKey(Keys.Down));
         }
 
         public bool isMovementAvailable()

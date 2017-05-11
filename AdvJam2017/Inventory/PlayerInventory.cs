@@ -8,17 +8,25 @@ using System.Threading.Tasks;
 
 namespace AdvJam2017.Inventory
 {
-    class PlayerInventory
+    public class PlayerInventory
     {
-        private List<ItemBase> _items;
-        public List<ItemBase> items => _items;
+        public const int MaxItems = 25;
+        public const int MaxColumns = 5;
+
+        private ItemBase[] _items;
+        public ItemBase[] items => _items;
 
         public PlayerInventory()
         {
-            _items = new List<ItemBase>();
-            _items.Add(new RedItem());
-            _items.Add(new GreenItem());
-            _items.Add(new RedItem());
+            _items = new ItemBase[MaxItems];
+            _items[0] = new RedItem();
+            _items[1] = new GreenItem();
+            _items[2] = new RedItem();
+        }
+
+        public ItemBase getItem(int x, int y)
+        {
+            return _items[x + y * MaxColumns];
         }
     }
 }

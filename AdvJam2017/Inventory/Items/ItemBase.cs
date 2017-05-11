@@ -2,8 +2,8 @@
 {
     public abstract class ItemBase
     {
-        protected string _name;
-        public string name => _name;
+        public abstract string name { get; }
+        public abstract string description { get; }
 
         protected ItemIcon _icon;
         public ItemIcon icon => _icon;

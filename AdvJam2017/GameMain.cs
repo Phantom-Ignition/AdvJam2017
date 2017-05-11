@@ -2,11 +2,15 @@
 using AdvJam2017.Managers;
 using Microsoft.Xna.Framework;
 using Nez;
+using Nez.BitmapFonts;
 
 namespace AdvJam2017
 {
     public class GameMain : Core
     {
+        public static BitmapFont bigBitmapFont;
+        public static BitmapFont smallBitmapFont;
+
         public GameMain() : base(width: 852, height: 480, isFullScreen: false, enableEntitySystems: true)
         {
             IsMouseVisible = true;
@@ -19,6 +23,12 @@ namespace AdvJam2017
             registerGlobalManager(new InputManager());
             registerGlobalManager(new SystemManager());
             registerGlobalManager(new PlayerManager());
+        }
+
+        protected override void LoadContent()
+        {
+            bigBitmapFont = content.Load<BitmapFont>(Nez.Content.Fonts.titleFont);
+            smallBitmapFont = content.Load<BitmapFont>(Nez.Content.Fonts.smallFont);
         }
 
         protected override void Initialize()

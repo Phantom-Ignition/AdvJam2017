@@ -8,6 +8,10 @@ namespace AdvJam2017.Inventory.Items
 {
     class GreenItem : ItemBase
     {
+        public override string name => "Green";
+
+        public override string description => "A green item, what did you expect?";
+
         protected override void loadIcon()
         {
             _icon = ItemIcon.Green;
@@ -15,7 +19,6 @@ namespace AdvJam2017.Inventory.Items
 
         protected override void loadProps()
         {
-            _name = "Green";
         }
     }
 }

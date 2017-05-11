@@ -210,7 +210,6 @@ namespace AdvJam2017.Components.Windows
 
         private string wrapText(string text)
         {
-            text += "                      ";
             var model = "<markuptext face='default' color='#ffffff' align='left'><p>{0}</p></markuptext>";
             return string.Format(model, text);
         }
