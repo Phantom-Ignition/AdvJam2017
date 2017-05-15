@@ -9,6 +9,7 @@ using AdvJam2017.Managers;
 using System.Collections.Generic;
 using AdvJam2017.Components.Player.PlayerStates;
 using System;
+using AdvJam2017.Components.Map;
 
 namespace AdvJam2017.Components.Player
 {
@@ -47,7 +48,7 @@ namespace AdvJam2017.Components.Player
 
         //--------------------------------------------------
         // Collision State
-        
+
         public TiledMapMover.CollisionState CollisionState => _platformerObject.collisionState;
         public bool ForcedGround { get; set; }
 
@@ -67,6 +68,7 @@ namespace AdvJam2017.Components.Player
 
         private bool _forceMovement;
         private Vector2 _forceMovementVelocity;
+        private bool _walljumpForcedMovement;
 
         //----------------------//------------------------//
 
@@ -143,10 +145,9 @@ namespace AdvJam2017.Components.Player
         public override void onAddedToEntity()
         {
             _platformerObject = entity.getComponent<PlatformerObject>();
-            _platformerObject.jumpHeight = 5 * 16;
         }
 
-        public void forceMovement(Vector2 velocity)
+        public void forceMovement(Vector2 velocity, bool walljumpForcedMovement = false)
         {
             if (velocity == Vector2.Zero)
             {
@@ -157,6 +158,7 @@ namespace AdvJam2017.Components.Player
                 _forceMovement = true;
                 _forceMovementVelocity = velocity;
             }
+            _walljumpForcedMovement = walljumpForcedMovement;
         }
 
         public void update()
@@ -169,13 +171,14 @@ namespace AdvJam2017.Components.Player
             {
                 var po = _platformerObject;
                 var mms = po.maxMoveSpeed;
+                var moveSpeed = _walljumpForcedMovement ? po.gravity * mms : po.moveSpeed;
 
                 if (velocity != Math.Sign(po.velocity.X))
                 {
                     po.velocity.X = 0;
                 }
-
-                po.velocity.X = (int)MathHelper.Clamp(po.velocity.X + po.moveSpeed * velocity * Time.deltaTime, -mms, mms);
+                
+                po.velocity.X = (int)MathHelper.Clamp(po.velocity.X + moveSpeed * velocity * Time.deltaTime, -mms, mms);
                 sprite.spriteEffects = velocity < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             }
             else

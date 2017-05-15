@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AdvJam2017.FSM
 {
@@ -18,6 +19,7 @@ namespace AdvJam2017.FSM
         private Stack<State<T, E>> _stateStack;
         private E _entity;
         private State<T, E> _requestingState;
+        private bool _requestingReset;
 
         public FiniteStateMachine(E entity, State<T, E> initialState)
         {
@@ -34,10 +36,19 @@ namespace AdvJam2017.FSM
             currentState.handleInput();
             currentState.update();
 
+            Console.WriteLine(currentState);
+
             if (_requestingState != null)
             {
                 currentState.end();
-                _stateStack.Pop();
+                if (_requestingReset)
+                {
+                    _stateStack.Clear();
+                }
+                else
+                {
+                    _stateStack.Pop();
+                }
                 setupState(_requestingState);
                 _stateStack.Push(_requestingState);
                 _requestingState = null;
@@ -64,6 +75,12 @@ namespace AdvJam2017.FSM
 
         public void changeState(State<T, E> state)
         {
+            _requestingState = state;
+        }
+
+        public void resetStackTo(State<T, E> state)
+        {
+            _requestingReset = true;
             _requestingState = state;
         }
     }

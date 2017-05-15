@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="8" tilewidth="32" tileheight="32" nextobjectid="38">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="8" tilewidth="32" tileheight="32" nextobjectid="39">
  <properties>
   <property name="collisionLayer" value="collision"/>
   <property name="defaultLayers" value="collision, details, trees"/>
@@ -10,11 +10,11 @@
  <layer name="trees" width="15" height="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
@@ -22,12 +22,12 @@
  <layer name="collision" width="15" height="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,3,3,3,3,0,0,4,4,4,4,4,
+0,0,0,0,0,0,0,4,0,0,4,0,0,0,0,
+0,0,0,0,0,0,0,4,0,0,4,0,0,0,0,
+0,0,0,0,0,0,0,4,0,0,4,0,0,4,4,
+0,0,0,0,0,0,0,4,0,0,4,0,0,4,0,
+0,0,0,0,0,0,0,4,0,0,0,0,0,4,0,
 3,3,3,3,3,3,3,3,3,3,3,3,3,3,0
 </data>
  </layer>
@@ -45,6 +45,9 @@
  </layer>
  <objectgroup name="objects">
   <object id="36" name="playerSpawn" x="120" y="145"/>
+ </objectgroup>
+ <objectgroup name="ladders">
+  <object id="38" x="96" y="32" width="32" height="192"/>
  </objectgroup>
  <objectgroup name="environment">
   <object id="28" name="Water" type="water" x="0" y="237" width="480" height="19"/>

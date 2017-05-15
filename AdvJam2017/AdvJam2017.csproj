@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Components\InteractionCollider.cs" />
+    <Compile Include="Components\Map\LadderComponent.cs" />
     <Compile Include="Components\Map\RaftComponent.cs" />
     <Compile Include="Components\Map\TransferComponent.cs" />
     <Compile Include="Components\PlatformerObject.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Scenes\SceneMapExtensions\FirstRaft.cs" />
     <Compile Include="Scenes\SceneMapExtensions\ISceneMapExtensionable.cs" />
     <Compile Include="Systems\CameraSystem.cs" />
+    <Compile Include="Systems\LadderSystem.cs" />
     <Compile Include="Systems\NpcInteractionSystem.cs" />
     <Compile Include="Systems\TransferSystem.cs" />
   </ItemGroup>

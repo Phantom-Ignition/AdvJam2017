@@ -1,7 +1,9 @@
-﻿using AdvJam2017.Managers;
+﻿using AdvJam2017.Components.Map;
+using AdvJam2017.Managers;
 using Microsoft.Xna.Framework;
 using Nez;
 using Nez.Tiled;
+using System;
 
 namespace AdvJam2017.Components
 {
@@ -13,7 +15,19 @@ namespace AdvJam2017.Components
         public float moveSpeed = 1000;
         public float maxMoveSpeed = 150;
         public float gravity = 1200;
-        public float jumpHeight = 32 * 0.9f;
+        public float jumpHeight = 16 * 3;
+        public float wallGravity = 100;
+
+        //--------------------------------------------------
+        // Walljump
+
+        public bool grabbingWall;
+
+        //--------------------------------------------------
+        // Ladder
+        
+        public LadderComponent ladderComponent { get; set; }
+        public bool IsOnLadder => ladderComponent != null;
 
         //--------------------------------------------------
         // Tiled Mover
@@ -46,8 +60,15 @@ namespace AdvJam2017.Components
 
         public void update()
         {
-            // apply gravity
-            velocity.Y += gravity * Time.deltaTime;
+            if (IsOnLadder)
+            {
+                velocity.X = 0.0f;
+            }
+            else
+            {
+                // apply gravity
+                velocity.Y += ((grabbingWall && velocity.Y > 0) ? wallGravity : gravity) * Time.deltaTime;
+            }
 
             // apply movement
             _mover.move(velocity * Time.deltaTime, _boxCollider, collisionState);
@@ -67,6 +88,16 @@ namespace AdvJam2017.Components
         public void jump()
         {
             velocity.Y = -Mathf.sqrt(2 * jumpHeight * gravity);
+        }
+
+        public void ladderVelocityUp()
+        {
+            velocity.Y = -100.0f;
+        }
+
+        public void ladderVelocityDown()
+        {
+            velocity.Y = 100.0f;
         }
     }
 }

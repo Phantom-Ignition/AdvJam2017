@@ -2,11 +2,14 @@
 using Nez;
 using AdvJam2017.FSM;
 using AdvJam2017.Managers;
+using Microsoft.Xna.Framework;
 
 namespace AdvJam2017.Components.Player.PlayerStates
 {
     public class PlayerState : State<PlayerState, PlayerComponent>
     {
+        protected InputManager _input => Core.getGlobalManager<InputManager>();
+
         public override void begin() { }
 
         public override void end() { }
@@ -19,9 +22,13 @@ namespace AdvJam2017.Components.Player.PlayerStates
                 {
                     fsm.pushState(new SlashingState());
                 }
-                if (entity.isOnGround() && Input.isKeyDown(Keys.Z))
+                if (entity.isOnGround() && _input.JumpButton.isPressed)
                 {
-                    fsm.changeState(new JumpingState(true));
+                    fsm.resetStackTo(new JumpingState(true));
+                }
+                if (_input.UpButton.isPressed)
+                {
+                    fsm.resetStackTo(new LadderState());
                 }
             }
         }
@@ -81,8 +88,16 @@ namespace AdvJam2017.Components.Player.PlayerStates
                 entity.SetAnimation(PlayerComponent.Animations.JumpLanding);
                 _landTime += Time.deltaTime;
                 if (_landTime >= 0.1f)
-                    fsm.changeState(new StandState());
+                    fsm.resetStackTo(new StandState());
                 return;
+            }
+            else if (entity.platformerObject.collisionState.left)
+            {
+                fsm.changeState(new WallJumpState(-1));
+            }
+            else if (entity.platformerObject.collisionState.right)
+            {
+                fsm.changeState(new WallJumpState(1));
             }
 
             _jumpTime += Time.deltaTime;
@@ -100,6 +115,80 @@ namespace AdvJam2017.Components.Player.PlayerStates
             }
 
             base.handleInput();
+        }
+    }
+
+    public class WallJumpState : PlayerState
+    {
+        private int _side;
+
+        public WallJumpState(int side)
+        {
+            _side = side;
+        }
+
+        public override void begin()
+        {
+            entity.SetAnimation(PlayerComponent.Animations.Stand);
+            entity.platformerObject.grabbingWall = true;
+        }
+
+        public override void update()
+        {
+            var collisionState = entity.platformerObject.collisionState;
+            if (entity.isOnGround())
+            {
+                fsm.resetStackTo(new StandState());
+            }
+            else if (_input.JumpButton.isPressed)
+            {
+                fsm.changeState(new JumpingState(true));
+                entity.forceMovement(Vector2.UnitX * _side * -1, true);
+                Core.schedule(0.2f, entity, t =>
+                {
+                    var self = t.context as PlayerComponent;
+                    self.forceMovement(Vector2.Zero);
+                });
+                return;
+            }
+            else if ((_side == -1 && !collisionState.left) || (_side == 1 && !collisionState.right))
+            {
+                fsm.changeState(new JumpingState(false));
+            }
+            base.handleInput();
+        }
+
+        public override void end()
+        {
+            entity.platformerObject.grabbingWall = false;
+        }
+    }
+
+    public class LadderState : PlayerState
+    {
+        public override void begin()
+        {
+            entity.SetAnimation(PlayerComponent.Animations.Slash);
+        }
+
+        public override void update()
+        {
+            if (entity.isOnGround() || !entity.platformerObject.IsOnLadder)
+            {
+                fsm.resetStackTo(new StandState());
+            }
+            else if (_input.JumpButton.isPressed)
+            {
+                fsm.changeState(new JumpingState(true));
+            }
+            else if (_input.UpButton.isDown)
+            {
+                entity.platformerObject.ladderVelocityDown();
+            }
+            else if (_input.DownButton.isDown)
+            {
+                entity.platformerObject.ladderVelocityUp();
+            }
         }
     }
 

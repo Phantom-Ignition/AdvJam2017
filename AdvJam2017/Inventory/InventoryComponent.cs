@@ -73,7 +73,7 @@ namespace AdvJam2017.Inventory
             _descriptionText.localOffset = new Vector2(InventoryWidth + 10, 10);
             onIndexChange();
 
-            activate();
+            //activate();
         }
 
         public void activate()

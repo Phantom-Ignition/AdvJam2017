@@ -58,6 +58,7 @@ namespace AdvJam2017.Scenes
             setupEntityProcessors();
             setupNpcs();
             setupParticles();
+            setupLadders();
             setupWater();
             setupMapTexts();
             setupMapExtensions();
@@ -180,6 +181,21 @@ namespace AdvJam2017.Scenes
             }
         }
 
+        private void setupLadders()
+        {
+            var ladders = _tiledMap.getObjectGroup("ladders");
+            if (ladders == null) return;
+
+            var names = new Dictionary<string, int>();
+            foreach (var ladderObj in ladders.objects)
+            {
+                names[ladderObj.name] = names.ContainsKey(ladderObj.name) ? ++names[ladderObj.name] : 0;
+
+                var ladder = createEntity(string.Format("{0}:{1}", ladderObj.name, names[ladderObj.name]));
+                ladder.addComponent(new LadderComponent(ladderObj));
+            }
+        }
+
         private void setupTransfers()
         {
             var transfers = _tiledMap.getObjectGroup("transfers");
@@ -198,11 +214,14 @@ namespace AdvJam2017.Scenes
         private void setupEntityProcessors()
         {
             var player = findEntity("player");
+            var playerComponent = player.getComponent<PlayerComponent>();
+
             camera.addComponent(new CameraShake());
             var mapSize = new Vector2(_tiledMap.width * _tiledMap.tileWidth, _tiledMap.height * _tiledMap.tileHeight);
             addEntityProcessor(new CameraSystem(player) { mapLockEnabled = true, mapSize = mapSize, followLerp = 0.08f, deadzoneSize = new Vector2(20, 10) });
-            addEntityProcessor(new NpcInteractionSystem(player.getComponent<PlayerComponent>()));
             addEntityProcessor(new TransferSystem(new Matcher().all(typeof(TransferComponent)), player));
+            addEntityProcessor(new NpcInteractionSystem(playerComponent));
+            addEntityProcessor(new LadderSystem(new Matcher().all(typeof(LadderComponent)), playerComponent));
         }
 
         private void setupWater()
