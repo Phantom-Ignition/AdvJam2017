@@ -27,7 +27,9 @@ namespace AdvJam2017.Components
         // Ladder
         
         public LadderComponent ladderComponent { get; set; }
-        public bool IsOnLadder => ladderComponent != null;
+        public bool IsLadderTouching => ladderComponent != null;
+
+        public bool gabbingLadder;
 
         //--------------------------------------------------
         // Tiled Mover
@@ -60,8 +62,9 @@ namespace AdvJam2017.Components
 
         public void update()
         {
-            if (IsOnLadder)
+            if (gabbingLadder)
             {
+                // deny any movement in the x axis
                 velocity.X = 0.0f;
             }
             else
@@ -90,14 +93,25 @@ namespace AdvJam2017.Components
             velocity.Y = -Mathf.sqrt(2 * jumpHeight * gravity);
         }
 
+        public void enterOnLadder()
+        {
+            gabbingLadder = true;
+            velocity.Y = 0;
+            _mover.move(Vector2.UnitY * -1, _boxCollider, collisionState);
+
+            var ladderX = ladderComponent.transform.position.X + ladderComponent.size.X / 2;
+            var ladderDelta = ladderX -_mover.transform.position.X;
+            _mover.move(Vector2.UnitX * ladderDelta, _boxCollider, collisionState);
+        }
+
         public void ladderVelocityUp()
         {
-            velocity.Y = -100.0f;
+            _mover.move(Vector2.UnitY * -2, _boxCollider, collisionState);
         }
 
         public void ladderVelocityDown()
         {
-            velocity.Y = 100.0f;
+            _mover.move(Vector2.UnitY * 2, _boxCollider, collisionState);
         }
     }
 }

@@ -121,10 +121,10 @@ namespace AdvJam2017.Scenes
 
             Core.getGlobalManager<SystemManager>().setPlayer(player);
 
-            var inventory = createEntity("player-inventory");
+            /*var inventory = createEntity("player-inventory");
             inventory.addComponent<InventoryComponent>();
             inventory.position = new Vector2(100, 20);
-            inventory.getComponent<InventoryComponent>().renderLayer = 1;
+            inventory.getComponent<InventoryComponent>().renderLayer = 1;*/
         }
 
         private void setupNpcs()

@@ -1,4 +1,5 @@
-﻿using Nez;
+﻿using Microsoft.Xna.Framework;
+using Nez;
 using Nez.Tiled;
 
 namespace AdvJam2017.Components.Map
@@ -6,6 +7,7 @@ namespace AdvJam2017.Components.Map
     public class LadderComponent : Component
     {
         private TiledObject _tiledObject;
+        public Vector2 size => new Vector2(_tiledObject.width, _tiledObject.height);
 
         public LadderComponent(TiledObject tiledObject)
         {

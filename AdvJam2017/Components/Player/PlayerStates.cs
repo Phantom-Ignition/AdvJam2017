@@ -26,7 +26,7 @@ namespace AdvJam2017.Components.Player.PlayerStates
                 {
                     fsm.resetStackTo(new JumpingState(true));
                 }
-                if (_input.UpButton.isPressed)
+                if (_input.UpButton.isPressed && entity.platformerObject.IsLadderTouching)
                 {
                     fsm.resetStackTo(new LadderState());
                 }
@@ -168,12 +168,13 @@ namespace AdvJam2017.Components.Player.PlayerStates
     {
         public override void begin()
         {
-            entity.SetAnimation(PlayerComponent.Animations.Slash);
+            entity.SetAnimation(PlayerComponent.Animations.Stand);
+            entity.platformerObject.enterOnLadder();
         }
 
         public override void update()
         {
-            if (entity.isOnGround() || !entity.platformerObject.IsOnLadder)
+            if (entity.isOnGround() || !entity.platformerObject.IsLadderTouching)
             {
                 fsm.resetStackTo(new StandState());
             }
@@ -181,14 +182,19 @@ namespace AdvJam2017.Components.Player.PlayerStates
             {
                 fsm.changeState(new JumpingState(true));
             }
-            else if (_input.UpButton.isDown)
+            else if (_input.DownButton.isDown)
             {
                 entity.platformerObject.ladderVelocityDown();
             }
-            else if (_input.DownButton.isDown)
+            else if (_input.UpButton.isDown)
             {
                 entity.platformerObject.ladderVelocityUp();
             }
+        }
+
+        public override void end()
+        {
+            entity.platformerObject.gabbingLadder = false;
         }
     }
 
